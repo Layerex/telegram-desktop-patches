@@ -1,6 +1,6 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/telegram-desktop/trunk/PKGBUILD
 pkgname=telegram-desktop-no-ads
-pkgver=4.0.0
+pkgver=4.0.2
 pkgrel=1
 pkgdesc='Patched Telegram Desktop client without ads'
 arch=('x86_64')
@@ -20,7 +20,7 @@ source=(
     "fix-tgcalls-cstdint.patch"
 )
 sha256sums=(
-    "f4ff20e1ac8ffdd4066d708f835fb1168c83bf4b74a20a52c9a31a0305e5a0c7"
+    "44659a7b2db3eff2e5c42e372dac14d1b03ffae19e005007ce580719615b59b1"
     "5f47426d882b6544d2cbb536a9fcc3ed13b6b7d035b713ccd8375d12536d71fe"
     "b0e31e8084cc0f67bcb147fcf975a90c98c853bd64206691c857c769073a1485"
 )
