@@ -1,7 +1,7 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/telegram-desktop/trunk/PKGBUILD
 pkgname=telegram-desktop-no-ads
 pkgver=4.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Patched Telegram Desktop client without ads'
 arch=('x86_64')
 url="https://desktop.telegram.org/"
