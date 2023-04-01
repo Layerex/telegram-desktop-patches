@@ -1,10 +1,10 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/telegram-desktop/trunk/PKGBUILD
-pkgname=telegram-desktop-no-ads
-pkgver=4.4.1
-pkgrel=2
-pkgdesc='Patched Telegram Desktop client without ads'
+pkgname=telegram-desktop-patched
+pkgver=4.6.5
+pkgrel=1
+pkgdesc='Telegram Desktop client with some anti-features disabled.'
 arch=('x86_64')
-url="https://desktop.telegram.org/"
+url="https://github.com/Layerex/telegram-desktop-patches"
 license=('GPL3')
 depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
          'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'qt6-5compat' 'xxhash' 'glibmm-2.68'
@@ -18,15 +18,24 @@ conflicts=("telegram-desktop")
 source=(
     "https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
     "0001-Disable-sponsored-messages.patch"
+    "0002-Disable-saving-restrictions.patch"
+    "0003-Disable-invite-peeking-restrictions.patch"
+    "0004-Disable-accounts-limit.patch"
 )
 sha256sums=(
-    "76981e32541c42b3212427e9abb4db2a6f55a14eaba31b3d7ad7d3d5ed8008b1"
+    "3448d879afdc7c5c06d2b0f9cabe339b08093cb25f380a3e398d32daa96a9c36"
     "5f47426d882b6544d2cbb536a9fcc3ed13b6b7d035b713ccd8375d12536d71fe"
+    "836d7bb45d0a6555d10097f2d1dcf1f367ae7112a7194886565aaa05f56d1b88"
+    "331d1b3a5f139da14556eb83da6498d0f94a8b16aeadc53f496c0cda72b3ebb2"
+    "d397e41b9c1eec716a1b08906acc732052cc9d4c5d3007cc5c9d910ab03c6ee8"
 )
 
 prepare() {
     cd tdesktop-$pkgver-full
     patch --forward --strip=1 -i "${srcdir}/0001-Disable-sponsored-messages.patch"
+    patch --forward --strip=1 -i "${srcdir}/0002-Disable-saving-restrictions.patch"
+    patch --forward --strip=1 -i "${srcdir}/0003-Disable-invite-peeking-restrictions.patch"
+    patch --forward --strip=1 -i "${srcdir}/0004-Disable-accounts-limit.patch"
 }
 
 build() {
