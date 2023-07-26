@@ -30,7 +30,7 @@ Disables restrictions for viewing and exporting private chats and channels you d
 
 ## Contributing
 
-Feel free to contibute other means of packaging and installation and useful patches (if those don't break actual features).
+Feel free to contibute patches and means of packaging and installation.
 
 ## Credits
 
