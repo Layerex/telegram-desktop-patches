@@ -1,3 +1,22 @@
+dnl procedures
+dnl remove_last_newline(STRING)
+define(`remove_last_newline', `substr(`$1', 0, decr(len(`$1')))')dnl
+dnl format_lines(LINES,LINE_START,LINE_END,LINE_PREFIX)
+define(`format_lines', `$2patsubst(remove_last_newline(`$1'), `
+', `$3
+$4$2')$3')dnl
+dnl defines
+define(`patches',`esyscmd(`printf "%s\n" *.patch')')dnl
+define(`hashes', `patsubst(esyscmd(`sha512sum *.patch'), `  .*', `')')dnl
+define(`PATCH_FILENAMES',format_lines(patches,`"',`"',`        '))dnl
+define(`PATCH_HASHES',format_lines(hashes,`"',`"',`    '))dnl
+define(`PATCH_COMMANDS',format_lines(patches,`patch --forward --strip=1 -i "${srcdir}/',`"',`    '))dnl
+dnl undefines
+undefine(`remove_last_newline')dnl
+undefine(`format_lines')dnl
+undefine(`patches')dnl
+undefine(`hashes')dnl
+dnl template
 # https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
 pkgname=telegram-desktop
 pkgver=4.8.9
@@ -18,23 +37,14 @@ optdepends=('webkit2gtk: embedded browser features'
 conflicts=("telegram-desktop")
 source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
         https://download.gnome.org/sources/glibmm/2.77/glibmm-2.77.0.tar.xz
-        "0001-Disable-sponsored-messages.patch"
-        "0002-Disable-saving-restrictions.patch"
-        "0003-Disable-invite-peeking-restrictions.patch"
-        "0004-Disable-accounts-limit.patch")
+        PATCH_FILENAMES)
 sha512sums=('56c6a2f1733e4b0d87570541dcad03e6ebf13c461a748cda6136d85b2fb939d2245c41db0c212a70fa998ad73d0578df0381bfdcebc0fd352344a67134b6aad9'
     '6650e822de2529582d93291025500afb6a182a0c5a564f656f164d79d8765bb4ca9c9d16227148431cc71c2677923b9364e81bbd4ca4f07f68e36bb380fb9574'
-    "d5898c0f12a90c39f277b874d9650b7e9ebea224f49e635c0c4275801d228a435b6b1ba0614ade1ade7eca63c4a4434779f056dd8950e2cb1c1ed9438adaa904"
-    "b8d748c2323fd1092555604f8643577ae3f84e7d6babc0b4fec4509b27186827ad197f6f7cd5e7222a49b6b65557fd306c27701a0d1100289d32a825b615d793"
-    "2c19b303ce77aa5b92dcbc46e61c0f45a5eb5fdb8810bd5f86a5d51acc4a79d6c41742d5197a0d72a6224e5f26855ab74ed35b5d085e8ba713cc9c87d8f54897"
-    "cba09b95960960f5657b5482389deb75abad8f4200f4809943e1ca873c19cf4caa99ef79f0ff32ecb17337e1b375523e310bc5e8843d13c8b3a5dff705ca9218")
+    PATCH_HASHES)
 
 prepare() {
     cd tdesktop-$pkgver-full
-    patch --forward --strip=1 -i "${srcdir}/0001-Disable-sponsored-messages.patch"
-    patch --forward --strip=1 -i "${srcdir}/0002-Disable-saving-restrictions.patch"
-    patch --forward --strip=1 -i "${srcdir}/0003-Disable-invite-peeking-restrictions.patch"
-    patch --forward --strip=1 -i "${srcdir}/0004-Disable-accounts-limit.patch"
+    PATCH_COMMANDS
 }
 
 build() {
