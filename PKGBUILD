@@ -1,5 +1,5 @@
 # https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
-pkgname=telegram-desktop
+pkgname=telegram-desktop-patched
 pkgver=4.8.9
 pkgrel=1
 pkgdesc='Telegram Desktop client with some anti-features (sponsored messages, saving restrictions and other) disabled.'
