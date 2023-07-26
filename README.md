@@ -16,6 +16,8 @@ Or if you want to regenerate PKGBUILD for current patches in the directory:
 make
 ```
 
+You may also install a prebuilt package published in releases.
+
 ### Other systems
 
 Download source code of Telegram Desktop and run commands from prepare(), build() and package() in PKGBUILD manually.
