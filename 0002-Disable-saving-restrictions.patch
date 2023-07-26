@@ -13,6 +13,19 @@ index e3bbba7..5bc409d 100644
  		if (hasCopyRestriction) {
  			controller->showToast(item->history()->peer->isBroadcast()
  				? tr::lng_error_nocopy_channel(tr::now)
+diff --git a/Telegram/SourceFiles/data/data_story.cpp b/Telegram/SourceFiles/data/data_story.cpp
+index fbc6785..17e2336 100644
+--- a/Telegram/SourceFiles/data/data_story.cpp
++++ b/Telegram/SourceFiles/data/data_story.cpp
+@@ -277,7 +277,7 @@ bool Story::edited() const {
+ }
+ 
+ bool Story::canDownload() const {
+-	return /*!forbidsForward() || */_peer->isSelf();
++	return true;
+ }
+ 
+ bool Story::canShare() const {
 diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/SourceFiles/history/history_inner_widget.cpp
 index 5074219..3cc5619 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
