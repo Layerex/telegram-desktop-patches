@@ -65,16 +65,15 @@ diff --git a/Telegram/SourceFiles/history/history_item.cpp b/Telegram/SourceFile
 index bc0fffe..2a50090 100644
 --- a/Telegram/SourceFiles/history/history_item.cpp
 +++ b/Telegram/SourceFiles/history/history_item.cpp
-@@ -1976,9 +1976,7 @@ bool HistoryItem::forbidsForward() const {
+@@ -1976,9 +1976,4 @@ bool HistoryItem::forbidsForward() const {
  }
  
  bool HistoryItem::forbidsSaving() const {
 -	if (forbidsForward()) {
 -		return true;
 -	} else if (const auto invoice = _media ? _media->invoice() : nullptr) {
-+	if (const auto invoice = _media ? _media->invoice() : nullptr) {
- 		return (invoice->extendedMedia != nullptr);
- 	}
+-		return (invoice->extendedMedia != nullptr);
+-	}
  	return false;
 diff --git a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
 index 5903fa9..6135e9b 100644
