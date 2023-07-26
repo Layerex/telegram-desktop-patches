@@ -2,7 +2,7 @@
 pkgname=telegram-desktop-patched
 pkgver=4.6.5
 pkgrel=1
-pkgdesc='Telegram Desktop client with some anti-features disabled.'
+pkgdesc='Telegram Desktop client with some anti-features (sponsored messages, saving restrictions and other) disabled.'
 arch=('x86_64')
 url="https://github.com/Layerex/telegram-desktop-patches"
 license=('GPL3')
