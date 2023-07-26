@@ -32,6 +32,10 @@ Disables restrictions for viewing and exporting private chats and channels you d
 
 Feel free to contibute patches and means of packaging and installation.
 
+## See also
+
+[Killergram](https://github.com/shatyuka/Killergram) - Xposed module featuring some patches with similar functionality for Telegram for Android.
+
 ## Credits
 
 [telegram-desktop-no-ads-pkgbuild](https://github.com/vehlwn/telegram-desktop-no-ads-pkgbuild)
