@@ -10,6 +10,12 @@ Patches disabling some anti-features of [Telegram Desktop](https://desktop.teleg
 makepkg -si
 ```
 
+Or if you want to regenerate PKGBUILD for current patches in the directory:
+
+``` sh
+make
+```
+
 ### Other systems
 
 Download source code of Telegram Desktop and run commands from prepare(), build() and package() in PKGBUILD manually.
