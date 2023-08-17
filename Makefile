@@ -1,5 +1,5 @@
 package: PKGBUILD
 	makepkg -si
 
-PKGBUILD: PKGBUILD.m4 $(wildcard *.patch)
+PKGBUILD: PKGBUILD.m4 .
 	m4 PKGBUILD.m4 > PKGBUILD
