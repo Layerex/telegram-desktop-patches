@@ -19,7 +19,7 @@ undefine(`hashes')dnl
 dnl template
 # https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
 pkgname=telegram-desktop-patched
-pkgver=4.8.9
+pkgver=4.9.1
 pkgrel=1
 pkgdesc='Telegram Desktop client with some anti-features (sponsored messages, saving restrictions and other) disabled.'
 arch=('x86_64')
@@ -38,7 +38,7 @@ conflicts=("telegram-desktop")
 source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
         https://download.gnome.org/sources/glibmm/2.77/glibmm-2.77.0.tar.xz
         PATCH_FILENAMES)
-sha512sums=('56c6a2f1733e4b0d87570541dcad03e6ebf13c461a748cda6136d85b2fb939d2245c41db0c212a70fa998ad73d0578df0381bfdcebc0fd352344a67134b6aad9'
+sha512sums=('9ed831ff01e9972838f79d81147933c38b629ea29f3198f24e84bd5ff595ffefee9407f995db84c44e18f72de7cb2e95bf4ef0560c8e10f64bcbaaefb63a624d'
     '6650e822de2529582d93291025500afb6a182a0c5a564f656f164d79d8765bb4ca9c9d16227148431cc71c2677923b9364e81bbd4ca4f07f68e36bb380fb9574'
     PATCH_HASHES)
 

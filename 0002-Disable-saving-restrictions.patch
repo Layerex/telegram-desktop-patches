@@ -14,20 +14,26 @@ index e3bbba7..5bc409d 100644
  			controller->showToast(item->history()->peer->isBroadcast()
  				? tr::lng_error_nocopy_channel(tr::now)
 diff --git a/Telegram/SourceFiles/data/data_story.cpp b/Telegram/SourceFiles/data/data_story.cpp
-index fbc6785..17e2336 100644
+index d5faa43..c6b26dc 100644
 --- a/Telegram/SourceFiles/data/data_story.cpp
 +++ b/Telegram/SourceFiles/data/data_story.cpp
-@@ -277,7 +277,7 @@ bool Story::edited() const {
+@@ -318,12 +318,11 @@ bool Story::edited() const {
  }
  
- bool Story::canDownload() const {
--	return /*!forbidsForward() || */_peer->isSelf();
+ bool Story::canDownloadIfPremium() const {
+-	return !forbidsForward() || _peer->isSelf();
++	return true;
+ }
+ 
+ bool Story::canDownloadChecked() const {
+-	return _peer->isSelf()
+-		|| (canDownloadIfPremium() && _peer->session().premium());
 +	return true;
  }
  
  bool Story::canShare() const {
 diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/SourceFiles/history/history_inner_widget.cpp
-index 5074219..3cc5619 100644
+index 2f1dabe..bd6d25f 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
 @@ -649,14 +649,7 @@ void HistoryInner::setupSharingDisallowed() {
@@ -46,7 +52,7 @@ index 5074219..3cc5619 100644
  }
  
  void HistoryInner::messagesReceived(
-@@ -2666,12 +2659,12 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2665,12 +2658,12 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  }
  
  bool HistoryInner::hasCopyRestriction(HistoryItem *item) const {
@@ -62,10 +68,10 @@ index 5074219..3cc5619 100644
  
  bool HistoryInner::showCopyRestriction(HistoryItem *item) {
 diff --git a/Telegram/SourceFiles/history/history_item.cpp b/Telegram/SourceFiles/history/history_item.cpp
-index bc0fffe..2a50090 100644
+index 55e1def..745338c 100644
 --- a/Telegram/SourceFiles/history/history_item.cpp
 +++ b/Telegram/SourceFiles/history/history_item.cpp
-@@ -1976,9 +1976,4 @@ bool HistoryItem::forbidsForward() const {
+@@ -1999,11 +1999,6 @@ bool HistoryItem::forbidsForward() const {
  }
  
  bool HistoryItem::forbidsSaving() const {
@@ -75,11 +81,13 @@ index bc0fffe..2a50090 100644
 -		return (invoice->extendedMedia != nullptr);
 -	}
  	return false;
+ }
+ 
 diff --git a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
-index 5903fa9..6135e9b 100644
+index 3de0cb2..0359ab3 100644
 --- a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
-@@ -1428,13 +1428,11 @@ bool ListWidget::isEmpty() const {
+@@ -1420,13 +1420,11 @@ bool ListWidget::isEmpty() const {
  }
  
  bool ListWidget::hasCopyRestriction(HistoryItem *item) const {
@@ -95,7 +103,7 @@ index 5903fa9..6135e9b 100644
  }
  
  bool ListWidget::showCopyRestriction(HistoryItem *item) {
-@@ -1460,21 +1458,6 @@ bool ListWidget::showCopyMediaRestriction(not_null<HistoryItem*> item) {
+@@ -1452,21 +1450,6 @@ bool ListWidget::showCopyMediaRestriction(not_null<HistoryItem*> item) {
  }
  
  bool ListWidget::hasCopyRestrictionForSelected() const {
@@ -117,7 +125,7 @@ index 5903fa9..6135e9b 100644
  	return false;
  }
  
-@@ -1493,8 +1476,7 @@ bool ListWidget::showCopyRestrictionForSelected() {
+@@ -1485,8 +1468,7 @@ bool ListWidget::showCopyRestrictionForSelected() {
  }
  
  bool ListWidget::hasSelectRestriction() const {
@@ -170,18 +178,21 @@ index 3e75975..ee23733 100644
  
  rpl::producer<bool> Provider::hasSelectRestrictionChanges() {
 diff --git a/Telegram/SourceFiles/media/view/media_view_overlay_widget.cpp b/Telegram/SourceFiles/media/view/media_view_overlay_widget.cpp
-index 2f2cf16..109653d 100644
+index 0a58cdb..626773f 100644
 --- a/Telegram/SourceFiles/media/view/media_view_overlay_widget.cpp
 +++ b/Telegram/SourceFiles/media/view/media_view_overlay_widget.cpp
-@@ -1025,10 +1025,7 @@ QSize OverlayWidget::flipSizeByRotation(QSize size) const {
+@@ -1031,13 +1031,7 @@ QSize OverlayWidget::flipSizeByRotation(QSize size) const {
  }
  
- bool OverlayWidget::hasCopyMediaRestriction() const {
--	const auto story = _stories ? _stories->story() : nullptr;
--	return (story && !story->canDownload())
--		|| (_history && !_history->peer->allowsForwarding())
+ bool OverlayWidget::hasCopyMediaRestriction(bool skipPremiumCheck) const {
+-	if (const auto story = _stories ? _stories->story() : nullptr) {
+-		return skipPremiumCheck
+-			? !story->canDownloadIfPremium()
+-			: !story->canDownloadChecked();
+-	}
+-	return (_history && !_history->peer->allowsForwarding())
 -		|| (_message && _message->forbidsSaving());
 +	return false;
  }
  
- bool OverlayWidget::showCopyMediaRestriction() {
+ bool OverlayWidget::showCopyMediaRestriction(bool skipPRemiumCheck) {
