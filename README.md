@@ -44,6 +44,8 @@ Toggle is in experimental settings.
 
 Feel free to contibute patches and means of packaging and installation.
 
+If you want to update PKGBUILD, make changes in PKGBUILD.m4 instead and PKGBUILD will be automatically generated.
+
 ## See also
 
 [Killergram](https://github.com/shatyuka/Killergram) - Xposed module featuring some patches with similar functionality for Telegram for Android.
