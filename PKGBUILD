@@ -20,12 +20,14 @@ source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver
         "0001-Disable-sponsored-messages.patch"
         "0002-Disable-saving-restrictions.patch"
         "0003-Disable-invite-peeking-restrictions.patch"
-        "0004-Disable-accounts-limit.patch")
+        "0004-Disable-accounts-limit.patch"
+        "0005-Option-to-disable-stories.patch")
 sha512sums=('802ec7eeef75ac97934cb0437c24dab62670f7029a1a5e44866cd77d39d7b572b79106c0b73bd742786548db938c49ba2e559123963ef0201adaa279b4cf9fa4'
             "d5898c0f12a90c39f277b874d9650b7e9ebea224f49e635c0c4275801d228a435b6b1ba0614ade1ade7eca63c4a4434779f056dd8950e2cb1c1ed9438adaa904"
             "4072e1c304fbb699d0d0cc42070480a3ac5580ba57bbc9b66debc030b04724fe5e7d02105c8ab270de2c4d3c58c1890040a03fe42cd329c934cfb087c1fab360"
             "2c19b303ce77aa5b92dcbc46e61c0f45a5eb5fdb8810bd5f86a5d51acc4a79d6c41742d5197a0d72a6224e5f26855ab74ed35b5d085e8ba713cc9c87d8f54897"
-            "cba09b95960960f5657b5482389deb75abad8f4200f4809943e1ca873c19cf4caa99ef79f0ff32ecb17337e1b375523e310bc5e8843d13c8b3a5dff705ca9218")
+            "cba09b95960960f5657b5482389deb75abad8f4200f4809943e1ca873c19cf4caa99ef79f0ff32ecb17337e1b375523e310bc5e8843d13c8b3a5dff705ca9218"
+            "b32b0d8c7a7940d48794fab50edee064a291daf2dd226bef7ffd82945da1eb095d89b19a296a4b3647be091ccd7210ec1a0ec9ebfe1ef917ae62cfac92740d44")
 
 prepare() {
     cd tdesktop-$pkgver-full
@@ -33,6 +35,7 @@ prepare() {
     patch --forward --strip=1 -i "${srcdir}/0002-Disable-saving-restrictions.patch"
     patch --forward --strip=1 -i "${srcdir}/0003-Disable-invite-peeking-restrictions.patch"
     patch --forward --strip=1 -i "${srcdir}/0004-Disable-accounts-limit.patch"
+    patch --forward --strip=1 -i "${srcdir}/0005-Option-to-disable-stories.patch"
 }
 
 build() {

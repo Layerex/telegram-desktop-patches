@@ -36,6 +36,10 @@ Disables restrictions for viewing and exporting private chats and channels you d
 
 ### 0004-Disable-accounts-limit.patch
 
+### 0005-Option-to-disable-stories.patch
+
+Toggle is in experimental settings.
+
 ## Contributing
 
 Feel free to contibute patches and means of packaging and installation.
