@@ -10,7 +10,7 @@ Patches disabling some anti-features of [Telegram Desktop](https://desktop.teleg
 makepkg -si
 ```
 
-Or if you want to regenerate PKGBUILD for current patches in the directory:
+Or if you want to regenerate `PKGBUILD` for current patches in the directory (don't use spaces in patch filenames):
 
 ``` sh
 make
@@ -20,7 +20,7 @@ You may also install a prebuilt package published in releases.
 
 ### Other systems
 
-Download source code of Telegram Desktop and run commands from prepare(), build() and package() in PKGBUILD manually.
+Download source code of Telegram Desktop and run commands from `prepare()`, `build()` and `package()` in `PKGBUILD` manually.
 
 ## Patches
 
@@ -44,7 +44,11 @@ Toggle is in experimental settings.
 
 Feel free to contibute patches and means of packaging and installation.
 
-If you want to update PKGBUILD, make changes in PKGBUILD.m4 instead and PKGBUILD will be automatically generated.
+## Updating
+
+If you want to update `PKGBUILD`, make changes in `PKGBUILD.m4` instead and generate `PKGBUILD` with `make`.
+
+See `PKGBUILD.m4` for update instuctions.
 
 ## See also
 
