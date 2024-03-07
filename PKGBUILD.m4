@@ -6,14 +6,16 @@ define(`format_lines', `$2patsubst(remove_last_newline(`$1'), `
 ', `$3
 $4$2')$3')dnl
 dnl defines
-define(`patches',`esyscmd(`printf "%s\n" *.patch')')dnl
-define(`hashes', `patsubst(esyscmd(`sha512sum *.patch'), `  .*', `')')dnl
+define(`sum_cmd_output', `esyscmd(`sha512sum *.patch')')dnl
+define(`patches',`patsubst(sum_cmd_output, `.*  ', `')')dnl
+define(`hashes', `patsubst(sum_cmd_output, `  .*', `')')dnl
 define(`PATCH_FILENAMES',format_lines(patches,`"',`"',`        '))dnl
 define(`PATCH_HASHES',format_lines(hashes,`"',`"',`            '))dnl
 define(`PATCH_COMMANDS',format_lines(patches,`patch --forward --strip=1 -i "${srcdir}/',`"',`    '))dnl
 dnl undefines
 undefine(`remove_last_newline')dnl
 undefine(`format_lines')dnl
+undefine(`sum_cmd_output')dnl
 undefine(`patches')dnl
 undefine(`hashes')dnl
 dnl template
