@@ -11,7 +11,7 @@ define(`patches',`patsubst(sum_cmd_output, `.*  ', `')')dnl
 define(`hashes', `patsubst(sum_cmd_output, `  .*', `')')dnl
 define(`PATCH_FILENAMES',format_lines(patches,`"',`"',`        '))dnl
 define(`PATCH_HASHES',format_lines(hashes,`"',`"',`            '))dnl
-define(`PATCH_COMMANDS',format_lines(patches,`patch --forward --strip=1 -i "${srcdir}/',`"',`    '))dnl
+define(`PATCH_COMMANDS',format_lines(patches,`patch --forward --strip=1 --input "${srcdir}/',`"',`    '))dnl
 dnl undefines
 undefine(`remove_last_newline')dnl
 undefine(`format_lines')dnl
@@ -19,33 +19,36 @@ undefine(`sum_cmd_output')dnl
 undefine(`patches')dnl
 undefine(`hashes')dnl
 dnl template
-# https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
 pkgname=telegram-desktop-patched
-pkgver=4.14.9
-pkgrel=1
 pkgdesc='Telegram Desktop client with some anti-features (sponsored messages, saving restrictions and other) disabled.'
-arch=('x86_64')
 url="https://github.com/Layerex/telegram-desktop-patches"
-license=('GPL3')
-depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
-         'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'xxhash'
-         'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'libxcomposite' 'abseil-cpp' 'libdispatch'
-         'openssl' 'protobuf' 'glib2' 'libsigc++-3.0' 'glibmm-2.68')
-makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
-             'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt'
-             'gobject-introspection' 'boost' 'fmt' 'mm-common' 'perl-xml-parser')
-optdepends=('webkit2gtk: embedded browser features'
-            'xdg-desktop-portal: desktop integration')
 conflicts=("telegram-desktop")
-source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
-        PATCH_FILENAMES)
-sha512sums=('802ec7eeef75ac97934cb0437c24dab62670f7029a1a5e44866cd77d39d7b572b79106c0b73bd742786548db938c49ba2e559123963ef0201adaa279b4cf9fa4'
-            PATCH_HASHES)
+provides=("telegram-desktop")
+pkgrel=1
 
 prepare() {
     cd tdesktop-$pkgver-full
     PATCH_COMMANDS
 }
+# To bump Telegram version, selectively paste upstream PKGBUILD below, retaining PATCH_FILENAMES and PATCH_HASHES
+# https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
+# Make sure you are modifying PKGBUILD.m4, not PKGBUILD, or your changes will be overwritten by make
+pkgver=4.15.0
+arch=('x86_64')
+license=('GPL3')
+depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal' 'ttf-opensans'
+         'qt6-imageformats' 'qt6-svg' 'qt6-wayland' 'xxhash'
+         'rnnoise' 'pipewire' 'libxtst' 'libxrandr' 'libxcomposite' 'abseil-cpp' 'libdispatch'
+         'openssl' 'protobuf' 'glib2' 'libsigc++-3.0' 'glibmm-2.68' 'kcoreaddons')
+makedepends=('cmake' 'git' 'ninja' 'python' 'range-v3' 'tl-expected' 'microsoft-gsl' 'meson'
+             'extra-cmake-modules' 'wayland-protocols' 'plasma-wayland-protocols' 'libtg_owt'
+             'gobject-introspection' 'boost' 'fmt' 'mm-common' 'perl-xml-parser')
+optdepends=('webkit2gtk: embedded browser features'
+            'xdg-desktop-portal: desktop integration')
+source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
+        PATCH_FILENAMES)
+sha512sums=('95aa5f14a9a88b9c6421049445f59f1c5c5d7ab4ca4e8b8f4ab7389bdb8f3cc6b29fea270574881633035acec769ba271261f84ec269010c63af28a03719da98'
+            PATCH_HASHES)
 
 build() {
     CXXFLAGS+=' -ffat-lto-objects'
