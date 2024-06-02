@@ -18,6 +18,15 @@ make
 
 You may also install a prebuilt package published in releases.
 
+### Nix
+
+May be unmaintained.
+
+- [Overrides](https://github.com/Layerex/telegram-desktop-patches/issues/4#issue-2124576494)
+- [Flake](https://github.com/shwewo/telegram-desktop-patched)
+
+**TODO:** generate overrides and flake automatically.
+
 ### Other systems
 
 Download source code of Telegram Desktop and run commands from `prepare()`, `build()` and `package()` in `PKGBUILD` manually.
