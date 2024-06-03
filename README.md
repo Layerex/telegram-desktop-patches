@@ -57,7 +57,7 @@ Feel free to contibute patches and means of packaging and installation.
 
 If you want to update `PKGBUILD`, make changes in `PKGBUILD.m4` instead and generate `PKGBUILD` with `make`.
 
-See `PKGBUILD.m4` for update instuctions.
+See `PKGBUILD.m4` for update instructions.
 
 ## See also
 
