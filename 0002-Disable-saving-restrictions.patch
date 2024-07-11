@@ -78,7 +78,7 @@ index 55e1def..745338c 100644
 -	if (forbidsForward()) {
 -		return true;
 -	} else if (const auto invoice = _media ? _media->invoice() : nullptr) {
--		return (invoice->extendedMedia != nullptr);
+-		return HasExtendedMedia(*invoice);
 -	}
  	return false;
  }
@@ -87,7 +87,7 @@ diff --git a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp b/Te
 index 3de0cb2..0359ab3 100644
 --- a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
-@@ -1420,13 +1420,11 @@ bool ListWidget::isEmpty() const {
+@@ -1515,13 +1515,11 @@ bool ListWidget::isEmpty() const {
  }
  
  bool ListWidget::hasCopyRestriction(HistoryItem *item) const {
@@ -103,7 +103,7 @@ index 3de0cb2..0359ab3 100644
  }
  
  bool ListWidget::showCopyRestriction(HistoryItem *item) {
-@@ -1452,21 +1450,6 @@ bool ListWidget::showCopyMediaRestriction(not_null<HistoryItem*> item) {
+@@ -1547,21 +1545,6 @@ bool ListWidget::showCopyMediaRestriction(not_null<HistoryItem*> item) {
  }
  
  bool ListWidget::hasCopyRestrictionForSelected() const {
@@ -125,7 +125,7 @@ index 3de0cb2..0359ab3 100644
  	return false;
  }
  
-@@ -1485,8 +1468,7 @@ bool ListWidget::showCopyRestrictionForSelected() {
+@@ -1580,8 +1563,7 @@ bool ListWidget::showCopyRestrictionForSelected() {
  }
  
  bool ListWidget::hasSelectRestriction() const {
@@ -134,7 +134,7 @@ index 3de0cb2..0359ab3 100644
 +	return false;
  }
  
- auto ListWidget::findViewForPinnedTracking(int top) const
+ Element *ListWidget::lookupItemByY(int y) const {
 diff --git a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp b/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
 index fa0d6ed..a569215 100644
 --- a/Telegram/SourceFiles/history/view/history_view_top_bar_widget.cpp
