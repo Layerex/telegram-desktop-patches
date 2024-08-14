@@ -4,6 +4,8 @@ Patches disabling some anti-features of [Telegram Desktop](https://desktop.teleg
 
 ## Installation
 
+Building requires ⪝48 GB of RAM. Use zram, if you are lacking.
+
 ### Arch Linux
 
 ```sh
