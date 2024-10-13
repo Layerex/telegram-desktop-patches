@@ -1,5 +1,5 @@
 diff --git a/Telegram/SourceFiles/data/components/sponsored_messages.cpp b/Telegram/SourceFiles/data/components/sponsored_messages.cpp
-index 4cb54fc..7d9761d 100644
+index c20ec96..bb3de67 100644
 --- a/Telegram/SourceFiles/data/components/sponsored_messages.cpp
 +++ b/Telegram/SourceFiles/data/components/sponsored_messages.cpp
 @@ -193,7 +193,7 @@ void SponsoredMessages::inject(

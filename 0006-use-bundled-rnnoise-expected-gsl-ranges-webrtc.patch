@@ -1,0 +1,71 @@
+diff -rup a/cmake/external/expected/CMakeLists.txt b/cmake/external/expected/CMakeLists.txt
+--- a/cmake/external/expected/CMakeLists.txt	2023-09-04 14:19:11.000000000 +0200
++++ b/cmake/external/expected/CMakeLists.txt	2023-09-14 09:56:02.804347761 +0200
+@@ -7,7 +7,7 @@
+ add_library(external_expected INTERFACE IMPORTED GLOBAL)
+ add_library(desktop-app::external_expected ALIAS external_expected)
+ 
+-if (DESKTOP_APP_USE_PACKAGED)
++if (NOT DESKTOP_APP_USE_PACKAGED)
+     if (DESKTOP_APP_USE_PACKAGED_LAZY)
+         find_package(tl-expected QUIET)
+     else()
+Only in b/cmake/external/gsl: CMakeLists.txt.rej
+diff -rup a/cmake/external/ranges/CMakeLists.txt b/cmake/external/ranges/CMakeLists.txt
+--- a/cmake/external/ranges/CMakeLists.txt	2023-09-04 14:19:11.000000000 +0200
++++ b/cmake/external/ranges/CMakeLists.txt	2023-09-14 09:56:02.804347761 +0200
+@@ -7,7 +7,7 @@
+ add_library(external_ranges INTERFACE IMPORTED GLOBAL)
+ add_library(desktop-app::external_ranges ALIAS external_ranges)
+ 
+-if (DESKTOP_APP_USE_PACKAGED)
++if (NOT DESKTOP_APP_USE_PACKAGED)
+     if (DESKTOP_APP_USE_PACKAGED_LAZY)
+         find_package(range-v3 QUIET)
+     else()
+diff -rup a/cmake/external/rnnoise/CMakeLists.txt b/cmake/external/rnnoise/CMakeLists.txt
+--- a/cmake/external/rnnoise/CMakeLists.txt	2023-09-04 14:19:11.000000000 +0200
++++ b/cmake/external/rnnoise/CMakeLists.txt	2023-09-14 09:56:02.804347761 +0200
+@@ -4,7 +4,7 @@
+ # For license and copyright information please follow this link:
+ # https://github.com/desktop-app/legal/blob/master/LEGAL
+ 
+-if (DESKTOP_APP_USE_PACKAGED)
++if (NOT DESKTOP_APP_USE_PACKAGED)
+     add_library(external_rnnoise INTERFACE IMPORTED GLOBAL)
+     add_library(desktop-app::external_rnnoise ALIAS external_rnnoise)
+ 
+@@ -18,7 +18,7 @@ endif()
+ add_library(external_rnnoise STATIC IMPORTED GLOBAL)
+ add_library(desktop-app::external_rnnoise ALIAS external_rnnoise)
+ 
+-set(rnnoise_lib_loc ${libs_loc}/rnnoise/out)
++set(rnnoise_lib_loc ${libs_loc}/rnnoise/.libs)
+ if (WIN32)
+     target_include_directories(external_rnnoise SYSTEM
+     INTERFACE
+@@ -40,7 +40,11 @@ elseif (APPLE)
+         IMPORTED_LOCATION_DEBUG "${rnnoise_lib_loc}/Debug/librnnoise.a"
+     )
+ else()
++    target_include_directories(external_rnnoise SYSTEM
++    INTERFACE
++        ${libs_loc}/rnnoise/include
++    )
+-    find_library(DESKTOP_APP_RNNOISE_LIBRARIES librnnoise.a REQUIRED)
++    find_library(DESKTOP_APP_RNNOISE_LIBRARIES librnnoise.a HINTS "${rnnoise_lib_loc}" REQUIRED)
+     set_target_properties(external_rnnoise PROPERTIES
+         IMPORTED_LOCATION "${DESKTOP_APP_RNNOISE_LIBRARIES}"
+     )
+diff -rup a/cmake/external/webrtc/CMakeLists.txt b/cmake/external/webrtc/CMakeLists.txt
+--- a/cmake/external/webrtc/CMakeLists.txt	2023-09-04 14:19:11.000000000 +0200
++++ b/cmake/external/webrtc/CMakeLists.txt	2023-09-14 09:56:02.804347761 +0200
+@@ -7,7 +7,7 @@
+ add_library(external_webrtc INTERFACE IMPORTED GLOBAL)
+ add_library(desktop-app::external_webrtc ALIAS external_webrtc)
+ 
+-if (DESKTOP_APP_USE_PACKAGED)
++if (NOT DESKTOP_APP_USE_PACKAGED)
+     find_package(tg_owt REQUIRED)
+     target_link_libraries(external_webrtc INTERFACE tg_owt::tg_owt)
+     return()

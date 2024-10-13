@@ -1,0 +1,18 @@
+diff --git a/cmake/external/webrtc/CMakeLists.txt b/cmake/external/webrtc/CMakeLists.txt
+index a372fb7..e77c7e3 100644
+--- a/cmake/external/webrtc/CMakeLists.txt
++++ b/cmake/external/webrtc/CMakeLists.txt
+@@ -97,13 +97,9 @@ INTERFACE
+     ${webrtc_libs_list}
+     $<LINK_ONLY:desktop-app::external_openssl>
+     $<LINK_ONLY:desktop-app::external_jpeg>
+-    $<TARGET_FILE:desktop-app::external_jpeg>
+     $<LINK_ONLY:desktop-app::external_openh264>
+-    $<TARGET_FILE:desktop-app::external_openh264>
+     $<LINK_ONLY:desktop-app::external_opus>
+-    $<TARGET_FILE:desktop-app::external_opus>
+     $<LINK_ONLY:desktop-app::external_vpx>
+-    $<TARGET_FILE:desktop-app::external_vpx>
+ )
+ 
+ if (WIN32)
