@@ -1,30 +1,31 @@
 diff --git a/Telegram/SourceFiles/data/data_stories.cpp b/Telegram/SourceFiles/data/data_stories.cpp
-index 668ec4c..7310345 100644
+index 0d9671f..f77cf4e 100644
 --- a/Telegram/SourceFiles/data/data_stories.cpp
 +++ b/Telegram/SourceFiles/data/data_stories.cpp
-@@ -6,6 +6,7 @@ For license and copyright information please follow this link:
+@@ -7,6 +7,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
  #include "data/data_stories.h"
 
- #include "api/api_report.h"
++#include "api/api_report.h"
 +#include "base/options.h"
  #include "base/unixtime.h"
  #include "apiwrap.h"
  #include "core/application.h"
-@@ -48,6 +49,13 @@ constexpr auto kPollingViewsPerPage = Story::kRecentViewersMax;
+@@ -47,6 +49,13 @@ constexpr auto kPollingViewsPerPage = Story::kRecentViewersMax;
 
  using UpdateFlag = StoryUpdate::Flag;
 
 +base::options::toggle DisableStories({
 +	.id = kOptionDisableStories,
 +	.name = "Disable stories",
-+	.description = "",
-+	.defaultValue = false,
++	.description = "Disable whole stories anti-feature.",
++	.defaultValue = true,
 +});
 +
  [[nodiscard]] std::optional<StoryMedia> ParseMedia(
  		not_null<Session*> owner,
  		const MTPMessageMedia &media) {
-@@ -93,12 +101,14 @@ std::vector<StoryId> RespectingPinned(const StoriesIds &ids) {
+@@ -92,6 +101,8 @@ std::vector<StoryId> RespectingPinned(const StoriesIds &ids) {
  	return result;
  }
 
@@ -33,20 +34,33 @@ index 668ec4c..7310345 100644
  StoriesSourceInfo StoriesSource::info() const {
  	return {
  		.id = peer->id,
--		.last = ids.empty() ? 0 : ids.back().date,
--		.count = uint32(std::min(int(ids.size()), kMaxSegmentsCount)),
--		.unreadCount = uint32(std::min(unreadCount(), kMaxSegmentsCount)),
-+		.last = DisableStories.value() || ids.empty() ? 0 : ids.back().date,
-+		.count = !DisableStories.value() * uint32(std::min(int(ids.size()), kMaxSegmentsCount)),
-+		.unreadCount = !DisableStories.value() * uint32(std::min(unreadCount(), kMaxSegmentsCount)),
- 		.premium = (peer->isUser() && peer->asUser()->isPremium()) ? 1U : 0,
- 	};
+@@ -364,6 +375,10 @@ void Stories::clearArchive(not_null<PeerData*> peer) {
  }
+
+ void Stories::parseAndApply(const MTPPeerStories &stories) {
++	if (DisableStories.value()) {
++		return;
++	}
++
+ 	const auto &data = stories.data();
+ 	const auto peerId = peerFromMTP(data.vpeer());
+ 	const auto already = _readTill.find(peerId);
+@@ -595,6 +610,10 @@ void Stories::savedStateChanged(not_null<Story*> story) {
+ }
+
+ void Stories::loadMore(StorySourcesList list) {
++	if (DisableStories.value()) {
++		return;
++	}
++
+ 	const auto index = static_cast<int>(list);
+ 	if (_loadMoreRequestId[index] || _sourcesLoaded[index]) {
+ 		return;
 diff --git a/Telegram/SourceFiles/data/data_stories.h b/Telegram/SourceFiles/data/data_stories.h
-index 2a172e4..679b3ad 100644
+index 4e6b0ce..b71076f 100644
 --- a/Telegram/SourceFiles/data/data_stories.h
 +++ b/Telegram/SourceFiles/data/data_stories.h
-@@ -31,6 +31,8 @@ struct StoryIdDates;
+@@ -30,6 +30,8 @@ struct StoryIdDates;
  class Story;
  class StoryPreload;
 
@@ -56,17 +70,17 @@ index 2a172e4..679b3ad 100644
  	base::flat_set<StoryId, std::greater<>> list;
  	std::vector<StoryId> pinnedToTop;
 diff --git a/Telegram/SourceFiles/settings/settings_experimental.cpp b/Telegram/SourceFiles/settings/settings_experimental.cpp
-index f578bce..92f0fff 100644
+index 983497e..db40ead 100644
 --- a/Telegram/SourceFiles/settings/settings_experimental.cpp
 +++ b/Telegram/SourceFiles/settings/settings_experimental.cpp
-@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
- */
- #include "settings/settings_experimental.h"
-
+@@ -19,6 +19,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "core/application.h"
+ #include "core/launcher.h"
+ #include "chat_helpers/tabbed_panel.h"
 +#include "data/data_stories.h"
- #include "ui/boxes/confirm_box.h"
- #include "ui/wrap/vertical_layout.h"
- #include "ui/wrap/slide_wrap.h"
+ #include "dialogs/dialogs_widget.h"
+ #include "info/profile/info_profile_actions.h"
+ #include "lang/lang_keys.h"
 @@ -140,6 +141,7 @@ void SetupExperimental(
  				: rpl::producer<>()));
  	};
