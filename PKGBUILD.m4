@@ -33,7 +33,7 @@ prepare() {
 # To bump Telegram version, selectively paste upstream PKGBUILD below, retaining PATCH_FILENAMES and PATCH_HASHES
 # https://gitlab.archlinux.org/archlinux/packaging/packages/telegram-desktop/-/blob/main/PKGBUILD
 # Make sure you are modifying PKGBUILD.m4, not PKGBUILD, or your changes will be overwritten by make
-pkgver=5.3.2
+pkgver=5.10.3
 arch=('x86_64')
 license=('GPL3')
 depends=('hunspell' 'ffmpeg' 'hicolor-icon-theme' 'lz4' 'minizip' 'openal'
@@ -48,7 +48,7 @@ optdepends=('webkit2gtk: embedded browser features'
             'xdg-desktop-portal: desktop integration')
 source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz"
         PATCH_FILENAMES)
-sha512sums=('594c6c9664b52b7eb5bbd2a1f052ddacee0e689b8f6553f332d126add37dc931d4ff7cd68911f709e16cb5f02ecc0d1f27bfc9bc2a92c83f856a43e7d1b554fa'
+sha512sums=('02a5db9b53309bd859aa7aa3400d8fc35873bb49f34395541c6d0ebfc41d90dc406844489d6f22afc5ea9d11bb3625c7715cb6de56f428e0957dfaae3c495431'
             PATCH_HASHES)
 
 build() {
